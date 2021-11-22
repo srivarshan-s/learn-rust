@@ -72,4 +72,10 @@ fn main() {
     println!("{}", word);
     let word = first_word_str(my_string_literal);
     println!("{}", word);
+
+    // Other slices
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    println!("{} {}", slice[0], slice[1]);
+    assert_eq!(slice, &[2, 3]);
 }
