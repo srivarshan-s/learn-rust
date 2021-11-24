@@ -1,5 +1,6 @@
 // An Example Program using Structs
 
+#[derive(Debug)]
 struct Rectangle {
     width: u32,
     height: u32,
@@ -31,6 +32,16 @@ fn main() {
         );
 
     // Adding usefule functionality with Derived Traits
+    let rectangle = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    // This does not compile as Rectangle does not implement Display() trait
+    // println!("{}", rectangle);
+    println!("The rectangle is {:?}", rectangle);
+    println!("The rectangle is {:#?}", rectangle);
+    dbg!(20 * rectangle.width);
+    dbg!(&rectangle);
 }
 
 fn area(width: u32, height: u32) -> u32 {
