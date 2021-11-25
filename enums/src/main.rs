@@ -57,6 +57,21 @@ fn main() {
     }
     let m = Message::Write(String::from("hello"));
     m.call();
+
+    // The Option Enum
+    // Already declared and brought into scope
+    // enum Option<T> {
+    //    None,
+    //    Some(T),
+    // }
+    let some_number = Some(5);
+    let som_string = Some("a string");
+    let absent_number: Option<i32> = None;
+    
+    let x: i8 = 5;
+    let y: Option<i8> = Some(5);
+    // Won't compile as we are trying to add i8 to Option<i8>
+    // let sum = x + y;
 }
 
 fn route(ip_kind: IpAddrKind) {}
