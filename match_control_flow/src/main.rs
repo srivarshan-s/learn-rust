@@ -13,6 +13,19 @@ enum Coin {
     Quarter(UsState),
 }
 
+fn main() {
+    let coin1 = Coin::Penny;
+    let coin2 = Coin::Nickel;
+    let coin3 = Coin::Dime;
+    let coin4 = Coin::Quarter(UsState::Alaska);
+    println!("{}", value_in_cents(&coin1));
+    println!("{}", value_in_cents(&coin2));
+    println!("{}", value_in_cents(&coin3));
+    println!("{}", value_in_cents(&coin4));
+
+    // Matching with Option<T>
+}
+
 fn value_in_cents(coin: &Coin) -> u8 {
     match coin {
         Coin::Penny => {
@@ -26,17 +39,4 @@ fn value_in_cents(coin: &Coin) -> u8 {
             25
         },
     }
-}
-
-fn main() {
-    let coin1 = Coin::Penny;
-    let coin2 = Coin::Nickel;
-    let coin3 = Coin::Dime;
-    let coin4 = Coin::Quarter(UsState::Alaska);
-    println!("{}", value_in_cents(&coin1));
-    println!("{}", value_in_cents(&coin2));
-    println!("{}", value_in_cents(&coin3));
-    println!("{}", value_in_cents(&coin4));
-
-    // Matching with Option<T>
 }
