@@ -37,4 +37,6 @@ fn main() {
     println!("{}", value_in_cents(&coin2));
     println!("{}", value_in_cents(&coin3));
     println!("{}", value_in_cents(&coin4));
+
+    // Matching with Option<T>
 }
