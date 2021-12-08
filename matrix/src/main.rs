@@ -51,7 +51,7 @@ impl Matrix {
             for j in 0..3 {
                 let mut sum = 0;
                 for k in 0..3 {
-                    sum += self.val[i][k] + matrix.val[k][j];
+                    sum += self.val[i][k] * matrix.val[k][j];
                 }
                 new_matrix.val[i][j] = sum;
             }
@@ -69,7 +69,7 @@ fn main() {
     matrix1.display();
     let mut matrix2 = Matrix {
         val: vec![vec![0, 0, 0], vec![0, 0, 0], vec![0, 0, 0]],
-        name: String::from("Matrix1"),
+        name: String::from("Matrix2"),
     };
     matrix2.init();
     matrix2.display();
