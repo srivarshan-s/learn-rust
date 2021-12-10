@@ -58,6 +58,10 @@ impl Matrix {
         }
         new_matrix
     }
+    fn add(&self, matrix: Matrix) -> Matrix {
+        println("Enter name of the new matrix");
+        let matrix_name = input_str();
+    }
 }
 
 fn main() {
