@@ -40,7 +40,7 @@ impl Matrix {
             }
         }
     }
-    fn multiply(&self, matrix: Matrix) -> Matrix{
+    fn multiply(&self, matrix: &Matrix) -> Matrix{
         println!("Enter name of new matrix");
         let matrix_name = input_str();
         let mut new_matrix = Matrix {
@@ -58,9 +58,19 @@ impl Matrix {
         }
         new_matrix
     }
-    fn add(&self, matrix: Matrix) -> Matrix {
-        println("Enter name of the new matrix");
+    fn add(&self, matrix: &Matrix) -> Matrix {
+        println!("Enter name of the new matrix");
         let matrix_name = input_str();
+        let mut new_matrix = Matrix {
+            val: vec![vec![0, 0, 0], vec![0, 0, 0], vec![0, 0, 0]],
+            name: matrix_name,
+        };
+        for i in 0..3 {
+            for j in 0..3 {
+                new_matrix.val[i][j] = self.val[i][j] + matrix.val[i][j];
+            }
+        }
+        new_matrix
     }
 }
 
@@ -77,6 +87,8 @@ fn main() {
     };
     matrix2.init();
     matrix2.display();
-    let matrix3 = matrix1.multiply(matrix2);
+    let matrix3 = matrix1.multiply(&matrix2);
     matrix3.display();
+    let matrix4 = matrix1.multiply(&matrix2);
+    matrix4.display();
 }
