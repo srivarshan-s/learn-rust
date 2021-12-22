@@ -1,38 +1,29 @@
-use std::io;
-
-fn read_f32() -> f32 {
-    let stdin = io::stdin();
-    let mut input = String::new();
-    stdin.read_line(&mut input).expect("Read failed!");
-    let a: f32 = input.trim().parse::<f32>().expect("It is not a number!");
-    return a;
-}
-
-fn read_string() -> String {
-    let stdin = io::stdin();
-    let mut input = String::new();
-    stdin.read_line(&mut input).expect("Read failed!");
-    input = input.trim().parse::<String>().expect("Conversion failed!");
-    return input;
-}
+use std::env::{args, Args};
 
 fn main() {
-    let mut a: f32 = read_f32();
-    loop {
-        let op: String = read_string();
-        let b: f32 = read_f32();
-        if op == "+" {
-            a = a + b;
-        }
-        if op == "-" {
-            a = a - b;
-        }
-        if op == "*" {
-            a = a * b;
-        }
-        if op == "/" {
-            a = a / b;
-        }
-        println!("{}", a);
+    let mut args: Args = args();
+
+    let first = args.nth(1).unwrap();
+    let operator = args.nth(0).unwrap().chars().next().unwrap();
+    let second = args.nth(0).unwrap();
+
+    let first_number = first.parse::<f32>().unwrap();
+    let second_number = second.parse::<f32>().unwrap();
+    let result = operate(operator, first_number, second_number);
+
+    println!("{:?}", output(first_number, operator, second_number, result));
+}
+
+fn operate(operator: char, first_number: f32, second_number: f32) -> f32 {
+    match operator {
+        '+' => first_number + second_number,
+        '-' => first_number - second_number,
+        '/' => first_number / second_number,
+        '*' | 'x' | 'X' => first_number * second_number,
+        _ => panic!("Invalid operator used"),
     }
+}
+
+fn output(first_number: f32, operator: char, second_number: f32, result: f32) -> String {
+    format!("{} {} {} = {}", first_number, operator, second_number, result)
 }
