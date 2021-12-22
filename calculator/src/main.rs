@@ -7,11 +7,17 @@ fn main() {
     let operator = args.nth(0).unwrap().chars().next().unwrap();
     let second = args.nth(0).unwrap();
 
-    let first_number = first.parse::<f32>().unwrap();
-    let second_number = second.parse::<f32>().unwrap();
+    let first_number = match first.parse::<f32>() {
+        Ok(num) => num,
+        _ => panic!("First arguement not a number.")
+    };
+    let second_number = match second.parse::<f32>() {
+        Ok(num) => num,
+        _ => panic!("Third argument not a number.")
+    };
     let result = operate(operator, first_number, second_number);
 
-    println!("{:?}", output(first_number, operator, second_number, result));
+    println!("{}", output(first_number, operator, second_number, result));
 }
 
 fn operate(operator: char, first_number: f32, second_number: f32) -> f32 {
