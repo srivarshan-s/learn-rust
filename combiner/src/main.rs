@@ -27,3 +27,13 @@ fn find_image_from_path(path: String) -> (DynamicImage, ImageFormat) {
     let image: DynamicImage = image_reader.decode().unwrap();
     (image, image_format)
 }
+
+fn get_smallest_dimension(dim_1: (u32, u32), dim_2: (u32, u32)) -> (u32, u32) {
+    let pix_1 = dim_1.0 * dim_1.1;
+    let pix_2 = dim_2.0 * dim_2.1;
+    return if pix_1 <= pix_2 { dim_1 } else { dim_2 }
+}
+
+fn standardise_size(image_1: DynamicImage, image_2: DynamicImage,) {
+    
+}
