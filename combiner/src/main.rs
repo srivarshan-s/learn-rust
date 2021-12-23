@@ -4,10 +4,18 @@ use args::Args;
 use std::fs::File;
 use std::io::BufReader;
 
-use image::{io::Reader, DynamicImage, ImageFormat};
+use image::{io::Reader, DynamicImage, ImageFormat, imageops::FilterType::Triangle, GenericImageView};
 
+#[derive(Debug)]
 enum ImageDataErrors {
     DifferentImageFormats,
+}
+
+struct FloatingImage {
+    width: u32,
+    height: u32,
+    data: Vec<u8>,
+    name: String,
 }
 
 fn main() -> Result<(), ImageDataErrors>{
@@ -18,6 +26,8 @@ fn main() -> Result<(), ImageDataErrors>{
     if image_format_1 != image_format_2 {
         return Err(ImageDataErrors::DifferentImageFormats);
     }
+
+    let (image_1, image_2) = standardise_size(image_1, image_2);
     Ok(())
 }
 
@@ -34,6 +44,13 @@ fn get_smallest_dimension(dim_1: (u32, u32), dim_2: (u32, u32)) -> (u32, u32) {
     return if pix_1 <= pix_2 { dim_1 } else { dim_2 }
 }
 
-fn standardise_size(image_1: DynamicImage, image_2: DynamicImage,) {
-    
+fn standardise_size(image_1: DynamicImage, image_2: DynamicImage,) -> (DynamicImage, DynamicImage) {
+    let (width, height) = get_smallest_dimension(image_1.dimensions(), image_2.dimensions());
+    println!("width: {}, height: {}", width, height);
+
+    if image_2.dimensions() == (width, height) {
+        (image_1.resize_exact(width, height, Triangle), image_2)        
+    } else {
+        (image_1, image_2.resize_exact(width, height, Triangle))        
+    }
 }
