@@ -40,7 +40,6 @@ fn main() -> Result<(), ImageDataErrors>{
     }
 
     let (image_1, image_2) = standardise_size(image_1, image_2);
-    println!("Images standardised.");
     let output = FloatingImage::new(image_1.width(), image_1.height(), args.output);
     Ok(())
 }
