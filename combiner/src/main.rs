@@ -1,8 +1,7 @@
 mod args;
 use args::Args;
 
-use std::{fs::File, panic};
-use std::io::BufReader;
+use std::panic;
 
 use image::{io::Reader, DynamicImage, ImageFormat, imageops::FilterType::Triangle, GenericImageView, ImageError};
 
@@ -13,6 +12,7 @@ enum ImageDataErrors {
     UnableToReadImageFromPath(std::io::Error),
     UnableToFormatImage(String),
     UnableToDecodeImage(ImageError),
+    UnableToSaveImage(ImageError),
 }
 
 struct FloatingImage {
@@ -56,8 +56,11 @@ fn main() -> Result<(), ImageDataErrors>{
     let combined_data = combine_images(image_1, image_2);
     output.set_data(combined_data)?;
 
-    image::save_buffer_with_format(output.name, &output.data, output.width, output.height, image::ColorType::Rgba8, image_format_1).unwrap();
-    Ok(())
+    if let Err(e) = image::save_buffer_with_format(output.name, &output.data, output.width, output.height, image::ColorType::Rgba8, image_format_1) {
+        Err(ImageDataErrors::UnableToSaveImage(e))
+    } else {
+        Ok(())
+    }
 }
 
 fn find_image_from_path(path: String) -> Result<(DynamicImage, ImageFormat), ImageDataErrors> {
