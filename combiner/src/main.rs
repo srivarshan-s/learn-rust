@@ -4,7 +4,7 @@ use args::Args;
 use std::{fs::File, panic};
 use std::io::BufReader;
 
-use image::{io::Reader, DynamicImage, ImageFormat, imageops::FilterType::Triangle, GenericImageView};
+use image::{io::Reader, DynamicImage, ImageFormat, imageops::FilterType::Triangle, GenericImageView, ImageError};
 
 #[derive(Debug)]
 enum ImageDataErrors {
@@ -12,6 +12,7 @@ enum ImageDataErrors {
     BufferTooSmall,
     UnableToReadImageFromPath(std::io::Error),
     UnableToFormatImage(String),
+    UnableToDecodeImage(ImageError),
 }
 
 struct FloatingImage {
@@ -42,8 +43,8 @@ impl FloatingImage {
 
 fn main() -> Result<(), ImageDataErrors>{
     let args = Args::new();
-    let (image_1, image_format_1) = find_image_from_path(args.image_1);
-    let (image_2, image_format_2) = find_image_from_path(args.image_2);
+    let (image_1, image_format_1) = find_image_from_path(args.image_1)?;
+    let (image_2, image_format_2) = find_image_from_path(args.image_2)?;
 
     if image_format_1 != image_format_2 {
         return Err(ImageDataErrors::DifferentImageFormats);
@@ -59,15 +60,17 @@ fn main() -> Result<(), ImageDataErrors>{
     Ok(())
 }
 
-fn find_image_from_path(path: String) -> (DynamicImage, ImageFormat) {
+fn find_image_from_path(path: String) -> Result<(DynamicImage, ImageFormat), ImageDataErrors> {
     match Reader::open(&path) {
         Ok(image_reader) => {
             if let Some(image_format) = image_reader.format() {
-                let image: DynamicImage = image_reader.decode().unwrap();
+            match image_reader.decode() {
+                Ok(image) => Ok((image, image_format)),
+                Err(e) => Err(ImageDataErrors::UnableToDecodeImage(e)),
+            }
             } else {
                 return Err(ImageDataErrors::UnableToFormatImage(path));
             }
-            (image, image_format)
         },
         Err(e) => Err(ImageDataErrors::UnableToReadImageFromPath(e)),
     }
